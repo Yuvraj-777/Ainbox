@@ -1,13 +1,13 @@
-# ☕ CaffeineCrew — Smart Email Triage with Agentic AI Assistants
+# ✉️ AInbox — Smart Email Triage with Agentic AI Assistants
 
-CaffeineCrew is an AI-powered email management system that automates the painful parts of your inbox: summarizing long threads, drafting professional replies, and highlighting priority messages. Powered by GPT-4 and designed with a clean, responsive UI using React, TypeScript, Tailwind CSS, and Radix UI.
+**AInbox** is an AI-powered email management system that automates the painful parts of your inbox: summarizing long threads, drafting professional replies, and highlighting priority messages. Powered by cutting-edge LLMs and designed with a clean, responsive UI using React, TypeScript, Tailwind CSS, and Radix UI.
 
 ### ✨ Features
-- 📩 Email Summarization using GPT-4
-- 🧠 Intelligent Prioritization (Low, Medium, High)
-- ✍️ AI-Generated Smart Replies
-- 🎯 Agentic Workflow Automation
-- 💻 Smooth UX with Vanta.js + Framer Motion animations
+- 📩 **Email Summarization** using GPT-4 / LLaMA 70B
+- 🧠 **Intelligent Prioritization** (Low, Medium, High)
+- ✍️ **AI-Generated Smart Replies** with tone control
+- 🎯 **Agentic Workflow Automation** for triage and reply
+- 💻 **Smooth UI/UX** with Vanta.js background & Framer Motion animations
 
 ### 🚀 Stack
 - **Frontend**: React + TypeScript + Tailwind CSS + Radix UI
@@ -17,3 +17,4 @@ CaffeineCrew is an AI-powered email management system that automates the painful
 
 ---
 
+Built for hackathons. Designed for busy inboxes. Powered by agentic AI.
