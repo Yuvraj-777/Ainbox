@@ -23,6 +23,14 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 
+import { motion } from "framer-motion";
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, type: "spring" } },
+};
+
+
 // HowItWorks component definition
 const HowItWorks = () => {
   const sectionRef = useRef(null);
@@ -72,11 +80,11 @@ const HowItWorks = () => {
   }, []);
 
   return (
-    <section id="how-it-works" className="py-16 bg-gray-50" ref={sectionRef}>
+    <section id="how-it-works" className="py-16 !bg-[#667eea]" ref={sectionRef}>
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">How It Works</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4 text-white">How It Works</h2>
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto italic">
             Our collaborative AI agents work together to transform your inbox
             into an organized, actionable system.
           </p>
@@ -87,7 +95,7 @@ const HowItWorks = () => {
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-blue-100">
             {/* Animated progress */}
             <div
-              className="bg-blue-500 w-1 transition-all duration-500 ease-in-out"
+              className="bg-indigo-800 ck w-1 transition-all duration-500 ease-in-out"
               style={{ height: `${((activeStep + 1) / steps.length) * 100}%` }}
             />
           </div>
@@ -99,7 +107,7 @@ const HowItWorks = () => {
                 {index % 2 === 0 ? (
                   <>
                     <div className="w-1/2 pr-8 text-right">
-                      <h3 className="text-xl font-bold text-primary">
+                      <h3 className="text-xl font-bold text-white">
                         {step.title}
                       </h3>
                     </div>
@@ -108,7 +116,7 @@ const HowItWorks = () => {
                     </div>
                     <div className="w-1/2 pl-8">
                       <p
-                        className={`text-gray-600 transition-opacity duration-500 ${
+                        className={`text-white italic transition-opacity duration-500 ${
                           activeStep >= index ? "opacity-100" : "opacity-30"
                         }`}
                       >
@@ -120,7 +128,7 @@ const HowItWorks = () => {
                   <>
                     <div className="w-1/2 pr-8 text-right">
                       <p
-                        className={`text-gray-600 transition-opacity duration-500 ${
+                        className={`text-white italic transition-opacity duration-500 ${
                           activeStep >= index ? "opacity-100" : "opacity-30"
                         }`}
                       >
@@ -131,7 +139,7 @@ const HowItWorks = () => {
                       {index + 1}
                     </div>
                     <div className="w-1/2 pl-8">
-                      <h3 className="text-xl font-bold text-primary">
+                      <h3 className="text-xl font-bold text-white">
                         {step.title}
                       </h3>
                     </div>
@@ -167,6 +175,42 @@ const Index = () => {
         // Not logged in or error, do nothing
       });
   }, []);
+  const heroRef = useRef(null);
+
+useEffect(() => {
+  let effect: any;
+
+  const loadVanta = async () => {
+    const THREE = await import("three");
+    const VANTA = await import("vanta/dist/vanta.net.min");
+
+    if (heroRef.current) {
+      effect = VANTA.default({
+        el: heroRef.current,
+        THREE,
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.0,
+        minWidth: 200.0,
+        scale: 1.0,
+        scaleMobile: 1.0,
+        color: 0x90074,
+        backgroundColor: 0x667eea,
+        points: 11.0,
+        maxDistance: 17.0,
+        spacing: 12.0
+      });
+    }
+  };
+
+  loadVanta();
+
+  return () => {
+    if (effect) effect.destroy();
+  };
+}, []);
+
 
   const plans = [
     {
@@ -257,7 +301,8 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="py-4 px-6 bg-white border-b">
+
+      <header className="py-4 px-6 bg-red border-b ">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center">
             <Mail className="h-8 w-8 text-primary" />
@@ -298,168 +343,189 @@ const Index = () => {
         </div>
       </header>
 
+
+
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white py-16 md:py-20">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 md:pr-10">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4">
-              Smart Email Triage with Agentic AI Assistants
-            </h1>
-            <p className="text-lg text-gray-600 mb-6 md:mb-8">
-              Our AI agents collaborate to classify, extract action items, and
-              generate responses from your emails, saving you hours each day.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button
-                size="lg"
-                onClick={() =>
-                  document
-                    .querySelector("#auth-card")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-              >
-                Start For Free
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="lg">
-                Watch Demo
-              </Button>
-            </div>
-          </div>
-          <div className="md:w-1/2 mt-10 md:mt-0 flex justify-center">
-            <div className="w-full max-w-md bg-white rounded-lg shadow-xl overflow-hidden border border-gray-200">
-              <div className="bg-primary p-4 text-white flex items-center">
-                <Mail className="h-5 w-5 mr-2" />
-                <h3 className="font-medium">Inbox</h3>
-              </div>
-              <div className="p-4 space-y-2">
-                <div className="border-l-4 border-amber-500 pl-3 py-2 bg-amber-50 rounded-r-md">
-                  <p className="text-sm font-medium">Project Proposal Review</p>
-                  <p className="text-xs text-gray-500">
-                    Urgent: Action required by EOD
-                  </p>
-                </div>
-                <div className="border-l-4 border-green-500 pl-3 py-2 bg-green-50 rounded-r-md">
-                  <p className="text-sm font-medium">Team Meeting Schedule</p>
-                  <p className="text-xs text-gray-500">
-                    Choose your preferred time slot
-                  </p>
-                </div>
-                <div className="border-l-4 border-purple-500 pl-3 py-2 bg-purple-50 rounded-r-md">
-                  <p className="text-sm font-medium">Monthly Report Summary</p>
-                  <p className="text-xs text-gray-500">
-                    AI-generated key insights
-                  </p>
-                </div>
-              </div>
-              <div className="bg-blue-50 p-3 border-t border-gray-200">
-                <div className="flex items-center text-xs text-blue-700">
-                  <Bot className="h-4 w-4 mr-1" />
-                  <span>AI Assistant: 3 actions identified</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section
+  ref={heroRef}
+  id="hero"
+  className="!bg-[#667eea] py-16 md:py-20 flex items-center justify-center min-h-screen relative overflow-hidden"
+>
+
+  <div className="container mx-auto px-6 flex flex-col items-center text-center text-white relative z-10">
+    <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4 text-black">
+      Smart Email Triage with Agentic AI Assistants
+    </h1>
+
+    <p className="text-lg text-white font-bold mb-6 !bg-[#667eea] md:mb-8 max-w-2xl">
+      Our AI agents collaborate to classify, extract action items, and generate responses from your emails, saving you hours each day.
+    </p>
+    <button className="bg-white !text-[#5f77e1] text-lg font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-gray-100 transition-all duration-300">
+      Try It Now
+    </button>
+    <blockquote className="mt-10 italic bg-white max-w-md !text-[#4f71e3]">
+      "This saved me hours each week — it's like having a personal assistant for email."
+    </blockquote>
+    <div
+      className="mt-12 cursor-pointer transition-transform duration-300 hover:scale-110"
+      onClick={() => {
+        const el = document.getElementById("features");
+        el?.scrollIntoView({ behavior: "smooth" });
+      }}
+    >
+      <svg
+        className="w-6 h-6 text-gray-200 animate-bounce"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+  </div>
+</section>
 
       {/* Features Section */}
-      <section id="features" className="py-16 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">
-              Intelligent Email Management
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Our AI-powered platform transforms how you handle emails with
-              smart automation and collaborative AI agents.
-            </p>
-          </div>
+     <section id="features" className="!bg-[#ffffff] mb-20 ">
+      
+  <div className="container mx-auto px-6">
+    <div className="text-center mb-12">
+      <h2 className="text-4xl font-bold mb-20 mt-20 font-mono text-black underline-offset-2">
+        Intelligent Email Management
+      </h2>
+      <p className="text-md text-gray-600 max-w-2xl mx-auto text-black italic">
+        Our AI-powered platform transforms how you handle emails with
+        smart automation and collaborative AI agents.
+      </p>
+    </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="border-t-4 border-t-blue-500">
-              <CardHeader>
-                <Sparkles className="h-10 w-10 text-blue-500 mb-2" />
-                <CardTitle>Smart Classification</CardTitle>
-                <CardDescription>
-                  AI agents automatically sort and prioritize incoming emails
-                  based on content and urgency.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center">
-                    <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-                    Urgent vs. non-urgent categorization
-                  </li>
-                  <li className="flex items-center">
-                    <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-                    Topic-based labeling
-                  </li>
-                  <li className="flex items-center">
-                    <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-                    Sender reputation analysis
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <motion.div
+        variants={cardVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        whileHover={{
+    scale: 1.04,
+    boxShadow: "0px 12px 30px rgba(0, 0, 0, 0.1)",
+    transition: { duration: 0.3, ease: "easeInOut" },
+  }}
 
-            <Card className="border-t-4 border-t-amber-500">
-              <CardHeader>
-                <Clock className="h-10 w-10 text-amber-500 mb-2" />
-                <CardTitle>Action Extraction</CardTitle>
-                <CardDescription>
-                  Extract and prioritize action items from emails to ensure
-                  nothing falls through the cracks.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center">
-                    <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-                    Automated task extraction
-                  </li>
-                  <li className="flex items-center">
-                    <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-                    Deadline identification
-                  </li>
-                  <li className="flex items-center">
-                    <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-                    Priority-based sorting
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+        className="transition-all duration-300"
+      >
+        <Card className="border-t-4 border-t-blue-500 my-4 shadow hover:shadow-lg">
+          <CardHeader>
+            <Sparkles className="h-10 w-10 text-blue-500 mb-2" />
+            <CardTitle>Smart Classification</CardTitle>
+            <CardDescription>
+              AI agents automatically sort and prioritize incoming emails
+              based on content and urgency.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-center">
+                <div className="h-2 w-2 rounded-full !bg-[#] mr-2"></div>
+                Urgent vs. non-urgent categorization
+              </li>
+              <li className="flex items-center">
+                <div className="h-2 w-2 rounded-full !bg-[#] mr-2"></div>
+                Topic-based labeling
+              </li>
+              <li className="flex items-center">
+                <div className="h-2 w-2 rounded-full !bg-[#] mr-2"></div>
+                Sender reputation analysis
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </motion.div>
 
-            <Card className="border-t-4 border-t-purple-500">
-              <CardHeader>
-                <Bot className="h-10 w-10 text-purple-500 mb-2" />
-                <CardTitle>AI Response Generation</CardTitle>
-                <CardDescription>
-                  Create appropriate response drafts based on email content and
-                  your communication style.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center">
-                    <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-                    Smart reply suggestions
-                  </li>
-                  <li className="flex items-center">
-                    <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-                    Tone and style matching
-                  </li>
-                  <li className="flex items-center">
-                    <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-                    One-click responses
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+      <motion.div
+        variants={cardVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        whileHover={{
+    scale: 1.04,
+    boxShadow: "0px 12px 30px rgba(0, 0, 0, 0.1)",
+    transition: { duration: 0.3, ease: "easeInOut" },
+  }}
+
+        className="transition-all duration-300"
+      >
+        <Card className="border-t-4 border-t-amber-500 my-4 shadow hover:shadow-lg">
+          <CardHeader>
+            <Clock className="h-10 w-10 text-amber-500 mb-2" />
+            <CardTitle>Action Extraction</CardTitle>
+            <CardDescription>
+              Extract and prioritize action items from emails to ensure
+              nothing falls through the cracks.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-center">
+                <div className="h-2 w-2 rounded-full !bg-[#] mr-2"></div>
+                Automated task extraction
+              </li>
+              <li className="flex items-center">
+                <div className="h-2 w-2 rounded-full !bg-[#] mr-2"></div>
+                Deadline identification
+              </li>
+              <li className="flex items-center">
+                <div className="h-2 w-2 rounded-full !bg-[#] mr-2"></div>
+                Priority-based sorting
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      <motion.div
+        variants={cardVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        whileHover={{
+    scale: 1.04,
+    boxShadow: "0px 12px 30px rgba(0, 0, 0, 0.1)",
+    transition: { duration: 0.3, ease: "easeInOut" },
+  }}
+
+        className="transition-all duration-300"
+      >
+        <Card className="border-t-4 border-t-purple-500 my-4 shadow hover:shadow-lg">
+          <CardHeader>
+            <Bot className="h-10 w-10 text-purple-500 mb-2" />
+            <CardTitle>AI Response Generation</CardTitle>
+            <CardDescription>
+              Create appropriate response drafts based on email content and
+              your communication style.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-center">
+                <div className="h-2 w-2 rounded-full !bg-[#] mr-2"></div>
+                Smart reply suggestions
+              </li>
+              <li className="flex items-center">
+                <div className="h-2 w-2 rounded-full !bg-[#] mr-2"></div>
+                Tone and style matching
+              </li>
+              <li className="flex items-center">
+                <div className="h-2 w-2 rounded-full !bg-[#] mr-2"></div>
+                One-click responses
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </div>
+  </div>
+</section>
+
 
       {/* How It Works Section */}
       <HowItWorks />
@@ -486,7 +552,6 @@ const Index = () => {
             </span>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
-                title="Annual"
                 type="checkbox"
                 checked={isAnnual}
                 onChange={() => setIsAnnual(!isAnnual)}
@@ -563,157 +628,160 @@ const Index = () => {
         </div>
       </section>
 
+{/*Reviews*/}
+      <section className="py-16 bg-gray-50">
+  <div className="container mx-auto px-6">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl font-bold mb-4">What Our Users Say</h2>
+      <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+        Thousands of professionals trust AInbox to manage their email workflow
+      </p>
+    </div>
 
-
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Review 1 */}
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full transform transition-all duration-500 hover:scale-105 hover:shadow-xl">
+        <div className="p-6 flex flex-col h-full border-t-4 !border-[#667eea]">
+          {/* Header with photo and name */}
+          <div className="flex items-center mb-4">
+            <div className="h-12 w-12 rounded-full !bg-[#ced7ff] flex items-center justify-center mr-3 overflow-hidden">
+              <User className="h-6 w-6 !text-[#667eea]" />
+            </div>
+            <div>
+              <h4 className="font-bold">Sarah Johnson</h4>
+              <p className="text-sm text-gray-500">Marketing Director</p>
+            </div>
+          </div>
+          
+          {/* Rating - with hover animation for each star */}
+          <div className="flex mb-3">
+            {[...Array(5)].map((_, i) => (
+              <svg 
+                key={i} 
+                className="w-5 h-5 !text-[#667eea] transition-all duration-300 hover:scale-125 hover:rotate-12" 
+                fill="currentColor" 
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.799-2.034c-.784-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            ))}
+          </div>
+          
+          {/* Review content */}
+          <p className="text-gray-600 italic mb-4 flex-grow">
+            "AInbox has completely transformed how I handle emails. The AI's ability to identify action items saves me hours each week. I'm now responding to critical emails faster than ever before."
+          </p>
+          
+          {/* Animated highlight */}
+          <div className="mt-2 !bg-[#ebefff] !text-[#667eea] font-medium p-2 rounded-md transform transition-transform">
+            Increased productivity by 45%
+          </div>
+        </div>
+      </div>
+      
+      {/* Review 2 */}
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full transform transition-all duration-500 hover:scale-105 hover:shadow-xl">
+        <div className="p-6 flex flex-col h-full border-t-4 !border-[#667eea]">
+          <div className="flex items-center mb-4">
+            <div className="h-12 w-12 rounded-full !bg-[#ced7ff] flex items-center justify-center mr-3 overflow-hidden">
+              <User className="h-6 w-6 !text-[#667eea]" />
+            </div>
+            <div>
+              <h4 className="font-bold">Michael Chen</h4>
+              <p className="text-sm text-gray-500">Software Engineer</p>
+            </div>
+          </div>
+          
+          <div className="flex mb-3">
+            {[...Array(5)].map((_, i) => (
+              <svg 
+                key={i} 
+                className="w-5 h-5 !text-[#667eea] transition-all duration-300 hover:scale-125 hover:rotate-12" 
+                fill="currentColor" 
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.799-2.034c-.784-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            ))}
+          </div>
+          
+          <p className="text-gray-600 italic mb-4 flex-grow">
+            "The smart classification system is incredible. It understands which emails need my immediate attention and which can wait. The action extraction feature is pure magic for my project management workflow."
+          </p>
+          
+          <div className="mt-2 !bg-[#ebefff] !text-[#667eea] font-medium p-2 rounded-md transform transition-transform">
+            Reduced email stress by 70%
+          </div>
+        </div>
+      </div>
+      
+      {/* Review 3 */}
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full transform transition-all duration-500 hover:scale-105 hover:shadow-xl">
+        <div className="p-6 flex flex-col h-full border-t-4 !border-[#667eea]">
+          <div className="flex items-center mb-4">
+            <div className="h-12 w-12 rounded-full !bg-[#ced7ff] flex items-center justify-center mr-3 overflow-hidden ">
+              <User className="h-6 w-6 !text-[#667eea]" />
+            </div>
+            <div>
+              <h4 className="font-bold">Emma Rodriguez</h4>
+              <p className="text-sm text-gray-500">Startup Founder</p>
+            </div>
+          </div>
+          
+          <div className="flex mb-3">
+            {[...Array(5)].map((_, i) => (
+              <svg 
+                key={i} 
+                className="w-5 h-5 !text-[#667eea] transition-all duration-300 hover:scale-125 hover:rotate-12" 
+                fill="currentColor" 
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.799-2.034c-.784-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            ))}
+          </div>
+          
+          <p className="text-gray-600 italic mb-4 flex-grow">
+            "As a founder, my inbox was overwhelming me before AInbox. Now the AI response generation helps me reply professionally without spending hours crafting emails. This tool has been a game-changer for my business."
+          </p>
+          
+          <div className="mt-2 !bg-[#ebefff] !text-[#667eea] font-medium p-2 rounded-md transform transition-transform">
+            Saved 12+ hours weekly
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center mb-4">
-                <Mail className="h-6 w-6 mr-2" />
-                <h3 className="text-lg font-bold">AInbox</h3>
-              </div>
-              <p className="text-gray-400 text-sm">
-                Smart email triage and action automation with AI assistants.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-lg font-medium mb-4">Product</h4>
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Features
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Pricing
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Case Studies
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Reviews
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-lg font-medium mb-4">Resources</h4>
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    API
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Guides
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Support
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-lg font-medium mb-4">Company</h4>
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Careers
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Contact
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-gray-400">
-              &copy; 2025 AInbox. All rights reserved.
-            </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-white">
-                Terms
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white">
-                Privacy
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white">
-                Cookies
-              </a>
-            </div>
-          </div>
+      <footer className="!bg-[#2c3d88] text-white py-6">
+  <div className="px-6 max-w-7xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="md:col-span-1 text-left">
+        <div className="flex items-center mb-2">
+          <Mail className="h-5 w-5 mr-2" />
+          <h3 className="text-base font-bold">AInbox</h3>
         </div>
-      </footer>
+        <p className="text-gray-200 text-sm leading-snug">
+          Smart email triage and action automation with AI assistants.
+        </p>
+      </div>
+    </div>
+
+    {/* Footer Bottom */}
+    <div className="mt-4 flex justify-center">
+      <p className="text-xs text-gray-200 text-center">
+        &copy; 2025 AInbox. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+
+
     </div>
   );
 };
