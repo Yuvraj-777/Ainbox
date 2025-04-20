@@ -17,4 +17,4 @@
 
 ---
 
-Built for hackathons. Designed for busy inboxes. Powered by agentic AI.
+Designed for busy inboxes. Powered by agentic AI.
